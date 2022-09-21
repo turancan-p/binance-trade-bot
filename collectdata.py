@@ -1,5 +1,3 @@
-import data.historical_data as historical
-from configs.config import TARGET_EXCHANCE, INTERVAL, HIST_MAX_NEED, SYMBOLS
+from data.new_data import save_new_data_to_db
 
-for symbol in SYMBOLS:
-    historical.save_historical_to_db(symbol, TARGET_EXCHANCE, INTERVAL, HIST_MAX_NEED)
+save_new_data_to_db()

@@ -6,7 +6,7 @@ from db.commands import INSERT_COMMAND
 
 
 def save_historical_to_db(symbol, target_exchance, interval, max_need):
-    create_db(symbol + target_exchance, interval)
+    create_db(f'{symbol}{target_exchance}', interval)
     datas = history(symbol, target_exchance, interval, max_need)
     datas.pop()
     for data in datas:
@@ -17,5 +17,5 @@ def save_historical_to_db(symbol, target_exchance, interval, max_need):
         low = data[3]
         close = data[4]
         new_Data = [id, open, high, low, close]
-        send_command_to_db(symbol + target_exchance, interval, INSERT_COMMAND, new_Data)
-    print("All Data Saved To DB For: ", symbol, target_exchance)
+        send_command_to_db(f'{symbol}{target_exchance}', interval, INSERT_COMMAND, new_Data)
+    print("All Data Saved To DB")

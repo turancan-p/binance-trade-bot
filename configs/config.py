@@ -3,7 +3,7 @@ API_KEY = ""
 API_SECRET = ""
 
 # Add or Delete symbols for bot
-SYMBOLS = ["BTC", "ETH", "LUNC"]
+SYMBOLS = ["BTC", "XRP", "ETH"]
 # Exchange type
 TARGET_EXCHANCE = "USDT"
 

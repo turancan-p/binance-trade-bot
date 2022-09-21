@@ -3,7 +3,7 @@ from db.commands import *
 
 
 def send_command_to_db(symbol, interval, command, data=None):
-    connection = sqlite3.connect(f'{symbol}{interval}.db')
+    connection = sqlite3.connect(f'{symbol.upper()}{interval}.db')
     connection_cursor = connection.cursor()
 
     if data is None:
@@ -20,7 +20,7 @@ def send_command_to_db(symbol, interval, command, data=None):
 
 
 def create_db(symbol, interval):
-    connection = sqlite3.connect(f'{symbol}{interval}.db')
+    connection = sqlite3.connect(f'{symbol.upper()}{interval}.db')
     connection_cursor = connection.cursor()
 
     connection_cursor.execute(CREATE_COMMAND)
