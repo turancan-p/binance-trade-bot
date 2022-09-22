@@ -7,6 +7,7 @@ from configs.config import TARGET_EXCHANCE, INTERVAL, HIST_MAX_NEED, SYMBOLS
 from data.historical_data import save_historical_to_db
 from db.commands import INSERT_COMMAND
 from db.database import send_command_to_db
+from find_signals import signals
 
 for symbol_ in SYMBOLS:
     save_historical_to_db(symbol=symbol_, target_exchance=TARGET_EXCHANCE, interval=INTERVAL, max_need=HIST_MAX_NEED)
@@ -47,6 +48,7 @@ async def save_new_data_to_db():
                     new_data = [id, open, high, low, close]
                     send_command_to_db(symbol, INTERVAL, INSERT_COMMAND, new_data)
                     print("New Data Saved To DB For: ", symbol, INTERVAL)
+                    signals()
                 else:
                     print("Data Received!")
 
