@@ -7,7 +7,7 @@ from configs.config import TARGET_EXCHANCE, INTERVAL, HIST_MAX_NEED, SYMBOLS
 from data.historical_data import save_historical_to_db
 from db.commands import INSERT_COMMAND
 from db.database import send_command_to_db
-from find_signals import signals
+from talib_signals import signals
 
 for symbol_ in SYMBOLS:
     save_historical_to_db(symbol=symbol_, target_exchance=TARGET_EXCHANCE, interval=INTERVAL, max_need=HIST_MAX_NEED)

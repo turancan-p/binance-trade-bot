@@ -1,9 +1,11 @@
 # Binance Trading & Backtesing Bot
-## _This is an experimental bot for auto trading for the binance. # NOT COMPLETED!_
+## _This is an experimental bot for auto trading for the binance._
+## NOT COMPLETED!
 
+Before run change config.py in configs document
 
 ### Run
-Before run change config.py in configs document
+
 ```shell
 python main.py
 ```

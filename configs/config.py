@@ -15,6 +15,8 @@ HIST_MAX_NEED = 200
 # Indicator periods
 RSIPERIODS = [14]
 MAPERIODS = [20, 100]
-
+EMAPERIODS = [20,100]
+ADXPERIODS = [3]
+BBANDSPERIODS = [3]
 # For Discord Log, if you don't want just leave empty
 DISCORD_WEBHOOK_URL = ""  # not implement yet
