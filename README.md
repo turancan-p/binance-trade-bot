@@ -11,10 +11,10 @@ Before run change configs.py in settings document
 python start_data_collecting.py
 ```
 
-### TODO (note's for me):
+### Upcoming Futures:
 ```
-1- Add binance functions for create market buy order and sell order
-2- Build a good strategy and test it with backtest
+1- Add binance functions for create market buy order and sell order(working on it now)
+2- Build a good strategy and test it with backtest(working on it now)
 3- if strategy is good enough test it live
 ```
 
