@@ -1,5 +1,4 @@
 python-binance
-numpy
-websocket_client
-websockets
-websocket
+websockets~=10.4
+prettytable~=3.5.0
+pandas
