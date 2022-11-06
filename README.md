@@ -3,13 +3,21 @@
 ## _This is an experimental bot for auto trading for the binance._
 ## NOT COMPLETED!
 
-Before run change config.py in configs document
+Before run change configs.py in settings document
 
-### Run
+### Run to collect data(it's working well):
 
 ```shell
-python collect_data.py
+python start_data_collecting.py
 ```
+
+### TODO (note's for me):
+```
+1- Add binance functions for create market buy order and sell order
+2- Build a good strategy and test it with backtest
+3- if strategy is good enough test it live
+```
+
 
  
 If you want to support me: [Click Here](https://www.buymeacoffee.com/turancan33)
