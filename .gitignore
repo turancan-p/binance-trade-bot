@@ -151,3 +151,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 *.db
+.idea/csv-plugin.xml
+backtest/BNB@kline_1m_npcloses.csv
+backtest/strategy_test.py
+backtest/strategy_test.py
+backtest/test.py
