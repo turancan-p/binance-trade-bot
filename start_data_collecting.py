@@ -1,3 +1,4 @@
 from collect_data import collect_new
 
-collect_new.test()
+
+collect_new.collect_data()

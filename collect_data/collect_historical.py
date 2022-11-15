@@ -1,6 +1,11 @@
 from settings.configs import TARGET_EXCHANCE, INTERVAL, HIST_MAX_NEED, SYMBOLS
 from sqlite3_db.database import create_db, insert_new_data
 from binance_functions.functions import get_historical_klines
+import os
+
+
+def clear():
+    os.system('cls')
 
 
 def collect():
@@ -16,3 +21,6 @@ def collect():
             close = data[4]
             new_Data = [open, high, low, close]
             insert_new_data(f'{symbol}{TARGET_EXCHANCE}', INTERVAL, new_Data)
+    clear()
+    print("All datas collected and saved.")
+    print("Signal calculation started!")

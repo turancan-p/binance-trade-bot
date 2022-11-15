@@ -1,4 +1,5 @@
 import sqlite3
+import pandas as pd
 from settings.configs import TARGET_EXCHANCE
 
 CREATE_COMMAND = '''CREATE TABLE IF NOT EXISTS Data (Open real, High real, Low real, Close real)'''
@@ -37,7 +38,7 @@ def insert_new_data(symbol, interval, data):
     connection.close()
 
 
-def select_all_data(symbol, interval):
+def select_last_data(symbol, interval):
     connection = sqlite3.connect(f'{symbol.lower()+TARGET_EXCHANCE.lower()}@kline_{interval}.db')
     connection_cursor = connection.cursor()
     connection_cursor.execute(SELECT_COMMAND)
@@ -48,3 +49,12 @@ def select_all_data(symbol, interval):
     connection.close()
 
     return response
+
+
+def select_all_data(symbol, interval):
+    connection = sqlite3.connect(f'{symbol.lower()+TARGET_EXCHANCE.lower()}@kline_{interval}.db')
+
+    dataframe = pd.read_sql(SELECT_COMMAND, connection)
+
+    connection.close()
+    return dataframe
