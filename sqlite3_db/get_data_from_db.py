@@ -22,7 +22,7 @@ def write_console():
 
 def write_details(budget, current_coin, coin_amount, pnl, process_count, win_rate):
     table = PrettyTable()
-    table.field_names = ["Current Budget", "Current And Coin Amount", "PNL", "Total Process", "Win Rate"]
+    table.field_names = ["Current Budget", "Current Coin : Amount", "PNL", "Total Process", "Win Rate"]
     table.add_row([budget, f'{current_coin}: {coin_amount}', pnl, process_count, win_rate])
     print(table)
 
