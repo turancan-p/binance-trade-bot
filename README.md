@@ -5,11 +5,17 @@
 
 Before run change configs.py in settings document
 
-### Run to collect data(it's working well):
+### Run to start bot:
 
 ```shell
-python start_data_collecting.py
+python start_bot.py
 ```
+### or
+```text
+Run BOT.bat
+```
+
+#
 
 ![binance_bot_console](https://user-images.githubusercontent.com/98945441/202046317-aa2ffc51-46bf-4d06-8bd4-b6e895b99da9.png)
 
