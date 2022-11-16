@@ -10,10 +10,6 @@ Before run change configs.py in settings document
 ```shell
 python start_bot.py
 ```
-### or
-```text
-Run BOT.bat
-```
 
 #
 
