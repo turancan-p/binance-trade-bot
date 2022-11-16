@@ -53,6 +53,9 @@ async def collect_data():
                         if configs.IN_POSITION is False and signals[symb + TARGET_EXCHANCE] == "WAIT":
                             print("Looking position for:", symb)
 
+                        elif configs.IN_POSITION is True and signals[configs.CURRENT_COIN] == "WAIT":
+                            print("WAIT:", configs.CURRENT_COIN)
+
                         elif configs.IN_POSITION is True and signals[configs.CURRENT_COIN] == "BUY":
                             print("HOLD:", configs.CURRENT_COIN)
 

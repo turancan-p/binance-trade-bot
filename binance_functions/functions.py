@@ -26,16 +26,16 @@ TESTING SECTION
 
 
 def test_buy(budget, buy_price):
-    coin_amount = budget / buy_price
-    return coin_amount
+    coin_amount = budget / float(buy_price)
+    return float(coin_amount)
 
 
 def test_sell(coin_amount, sell_price, process_count):
     process_count = process_count + 1
 
-    budget = coin_amount * sell_price
+    budget = float(coin_amount) * float(sell_price)
 
-    return budget, process_count
+    return float(budget), process_count
 
 
 def win_rate_calc(win_count, process_count):
