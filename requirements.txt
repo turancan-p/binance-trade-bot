@@ -2,3 +2,5 @@ python-binance
 websockets~=10.4
 prettytable~=3.5.0
 pandas
+numpy
+discord-webhook

@@ -13,7 +13,7 @@ INTERVAL = "1m"
 HIST_MAX_NEED = 200
 
 # For Discord Log, if you don't want just leave empty
-DISCORD_WEBHOOK_URL = ""  # not implement yet
+DISCORD_WEBHOOK_URL = "" # don't delete
 
 # DON'T DELETE
 IN_POSITION = False

@@ -28,9 +28,9 @@ def signal_finder(symb):
     ema_100 = talib.EMA(numpy_closes, 100)
     last_ema_100 = ema_100[-1]
 
-    if last_rsi_20 < 30:
+    if last_rsi_20 < 50:
         last_signals[symb] = "BUY"
-    elif last_rsi_20 > 70:
+    elif last_rsi_20 > 55:
         last_signals[symb] = "SELL"
     else:
         last_signals[symb] = "WAIT"
