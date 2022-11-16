@@ -75,8 +75,9 @@ async def collect_data():
                             configs.IN_POSITION = False
 
                     print("")
-
-                    write_details(configs.BUDGET, configs.COIN_AMOUNT, configs.PNL, configs.PROCESS_COUNT, configs.WIN_RATE)
+                    if configs.COIN_AMOUNT == 0:
+                        configs.CURRENT_COIN = "None"
+                    write_details(configs.BUDGET, configs.CURRENT_COIN, configs.COIN_AMOUNT, configs.PNL, configs.PROCESS_COUNT, configs.WIN_RATE)
 
 
 asyncio.get_event_loop().run_until_complete(collect_data())
