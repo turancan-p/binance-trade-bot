@@ -1,6 +1,5 @@
 import numpy
 import talib
-import threading
 
 from settings.configs import SYMBOLS, TARGET_EXCHANCE
 from sqlite3_db.get_data_from_db import datas_for_signal
@@ -28,9 +27,9 @@ def signal_finder(symb):
     ema_100 = talib.EMA(numpy_closes, 100)
     last_ema_100 = ema_100[-1]
 
-    if last_rsi_20 < 50:
+    if last_rsi_20 < 40:
         last_signals[symb] = "BUY"
-    elif last_rsi_20 > 55:
+    elif last_rsi_20 > 50:
         last_signals[symb] = "SELL"
     else:
         last_signals[symb] = "WAIT"
@@ -44,3 +43,5 @@ def run_strategy():
         signals[symbol+TARGET_EXCHANCE] = signal_finder(symbol)
     print("")
     return signals
+
+

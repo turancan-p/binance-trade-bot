@@ -2,8 +2,7 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 from settings.configs import DISCORD_WEBHOOK_URL
 
 
-if DISCORD_WEBHOOK_URL != "":
-    webhook = DiscordWebhook(url=f'{DISCORD_WEBHOOK_URL}', username="T-Crypto")
+webhook = DiscordWebhook(url=f'{DISCORD_WEBHOOK_URL}', username="T-Crypto")
 
 
 def send_message(symbol, type, budget, amount, price, total_process, pnl, win_rate):
@@ -37,3 +36,5 @@ def send_message(symbol, type, budget, amount, price, total_process, pnl, win_ra
         webhook.add_embed(embed)
         response = webhook.execute()
         return response
+
+

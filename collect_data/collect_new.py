@@ -2,14 +2,15 @@ import json
 import asyncio
 import websockets
 
-from binance_functions.functions import test_buy, test_sell, win_rate_calc
+from binance_functions.functions import test_sell, win_rate_calc, get_price, amount_calc
 from settings.configs import TARGET_EXCHANCE, INTERVAL, SYMBOLS
 from settings import configs
+from settings import status
 from sqlite3_db.database import insert_new_data
 from collect_data.collect_historical import collect as historical_data_collect
 from sqlite3_db.get_data_from_db import write_console, write_details
 from strategy import test_strategy
-from discord.discord_functions import send_message
+
 
 stream_url = "wss://stream.binance.com:9443/ws/"
 
@@ -51,38 +52,38 @@ async def collect_data():
                     write_console()
                     signals = test_strategy.run_strategy()
 
-                    for symb in SYMBOLS:
-                        if configs.IN_POSITION is False and signals[symb + TARGET_EXCHANCE] == "WAIT":
-                            print("Looking position for:", symb)
+                    if configs.IN_POSITION is False and signals[symbol] == "WAIT":
+                        print("Looking position for:", symbol)
+                        print(signals)
 
-                        elif configs.IN_POSITION is True and signals[configs.CURRENT_COIN] == "WAIT":
-                            print("Looking sell position for:", configs.CURRENT_COIN)
+                    elif configs.IN_POSITION is True and signals[configs.CURRENT_COIN] == "WAIT":
+                        print("Looking sell position for:", configs.CURRENT_COIN)
 
-                        elif configs.IN_POSITION is True and signals[configs.CURRENT_COIN] == "BUY":
-                            print("HOLD:", configs.CURRENT_COIN)
+                    elif configs.IN_POSITION is True and signals[configs.CURRENT_COIN] == "BUY":
+                        print("HOLD:", configs.CURRENT_COIN)
 
-                        elif configs.IN_POSITION is False and signals[symb + TARGET_EXCHANCE] == "BUY":
-                            print("BUY:", symb)
-                            configs.COIN_AMOUNT, configs.BUDGET = test_buy(configs.BUDGET, close), 0
-                            configs.CURRENT_COIN = symb + TARGET_EXCHANCE
+                    elif configs.IN_POSITION is False and signals[symbol] == "BUY":
+                        print("BUY:", symbol)
+                        configs.COIN_AMOUNT, configs.BUDGET = amount_calc(symbol, configs.BUDGET, get_price(symbol))
+                        configs.CURRENT_COIN = symbol
 
-                            message = send_message(configs.CURRENT_COIN, "BUY", configs.BUDGET, configs.COIN_AMOUNT, close, configs.PROCESS_COUNT, configs.PNL, configs.WIN_RATE)
-                            print("buy:", message)
-                            configs.IN_POSITION = True
+                        #send_message(configs.CURRENT_COIN, "BUY", configs.BUDGET, configs.COIN_AMOUNT, close, configs.PROCESS_COUNT, configs.PNL, configs.WIN_RATE)
+                        configs.IN_POSITION = True
 
-                        elif configs.IN_POSITION is True and signals[configs.CURRENT_COIN] == "SELL":
-                            print("SELL:", symb)
-                            (configs.BUDGET, configs.PROCESS_COUNT), configs.COIN_AMOUNT = test_sell(configs.COIN_AMOUNT, close, configs.PROCESS_COUNT), 0
-                            if configs.LAST_BUDGET < configs.BUDGET:
-                                configs.WIN_COUNT += 1
-                            configs.WIN_RATE = win_rate_calc(configs.WIN_COUNT, configs.PROCESS_COUNT)
-                            configs.PNL = configs.BUDGET - configs.START_BUDGET
+                    elif configs.IN_POSITION is True and signals[configs.CURRENT_COIN] == "SELL":
+                        print("SELL:", configs.CURRENT_COIN)
+                        configs.BUDGET, configs.PROCESS_COUNT, configs.COIN_AMOUNT = test_sell(configs.COIN_AMOUNT, configs.CURRENT_COIN, configs.PROCESS_COUNT)
 
-                            message = send_message(configs.CURRENT_COIN, "SELL", configs.BUDGET, configs.COIN_AMOUNT, close, configs.PROCESS_COUNT, configs.PNL, configs.WIN_RATE)
-                            print("sell:", message)
-                            configs.IN_POSITION = False
+                        if configs.LAST_BUDGET < configs.BUDGET:
+                            configs.WIN_COUNT += 1
 
-                    print(message)
+                        configs.LAST_BUDGET = configs.BUDGET
+
+                        configs.WIN_RATE = win_rate_calc(configs.WIN_COUNT, configs.PROCESS_COUNT)
+                        configs.PNL = configs.BUDGET - configs.START_BUDGET
+
+                        #send_message(configs.CURRENT_COIN, "SELL", configs.BUDGET, configs.COIN_AMOUNT, close, configs.PROCESS_COUNT, configs.PNL, configs.WIN_RATE)
+                        configs.IN_POSITION = False
                     print("")
                     if configs.COIN_AMOUNT == 0:
                         configs.CURRENT_COIN = "None"
