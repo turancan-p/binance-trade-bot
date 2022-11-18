@@ -10,6 +10,7 @@ def signal_finder(symb):
     global last_signals
 
     last_signals = {}
+    last_rsi = {}
     close_values = []
 
     dataframe = datas_for_signal(symb)
@@ -27,21 +28,31 @@ def signal_finder(symb):
     ema_100 = talib.EMA(numpy_closes, 100)
     last_ema_100 = ema_100[-1]
 
-    if last_rsi_20 < 40:
+    if last_rsi_20 < 30:
         last_signals[symb] = "BUY"
-    elif last_rsi_20 > 50:
+    elif last_rsi_20 > 70:
         last_signals[symb] = "SELL"
     else:
         last_signals[symb] = "WAIT"
+
+    last_rsi[symb] = last_rsi_20
     print(f'SYMBOL: {symb+TARGET_EXCHANCE} RSI_20: {last_rsi_20} EMA_50: {last_ema_50} EMA_100: {last_ema_100}')
-    return last_signals[symb]
+    return last_signals[symb], last_rsi[symb]
 
 
 def run_strategy():
     signals = {}
+    rsi = {}
     for symbol in SYMBOLS:
-        signals[symbol+TARGET_EXCHANCE] = signal_finder(symbol)
+        signals[symbol+TARGET_EXCHANCE], rsi[symbol+TARGET_EXCHANCE] = signal_finder(symbol)
     print("")
-    return signals
+    print(f'Signals:\n{signals}')
+    print("")
+    min_val = min(rsi.values())
+    for key, value in rsi.items():
+        if value == min_val:
+            min_rsi_key = str(key)
+
+    return signals, min_rsi_key
 
 
