@@ -2,21 +2,20 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 from settings.configs import DISCORD_WEBHOOK_URL
 
 
-webhook = DiscordWebhook(url=f'{DISCORD_WEBHOOK_URL}', username="T-Crypto")
-
-
-def send_message(symbol, type, budget, amount, price, total_process, pnl, win_rate):
+def send_message(symbol, process_type, budget, amount, price, total_process, pnl, win_rate):
     if DISCORD_WEBHOOK_URL == "":
         return "Web Hook Empty"
     else:
+        webhook = DiscordWebhook(url=f'{DISCORD_WEBHOOK_URL}', username="T-Crypto")
+
         color = 'f8bb03'
-        if type == "BUY":
+        if process_type == "BUY":
             color = '03f848'
-        elif type == "SELL":
+        elif process_type == "SELL":
             color = 'f83403'
 
         embed = DiscordEmbed(
-            title=f'{type}', description=f'{symbol}', color=color
+            title=f'{process_type}', description=f'{symbol}', color=color
         )
         embed.set_author(
             name="Turan Can Pamuk",

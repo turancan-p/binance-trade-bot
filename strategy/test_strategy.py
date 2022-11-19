@@ -30,7 +30,7 @@ def signal_finder(symb):
 
     if last_rsi_20 < 30:
         last_signals[symb] = "BUY"
-    elif last_rsi_20 > 70:
+    elif last_rsi_20 > 60:
         last_signals[symb] = "SELL"
     else:
         last_signals[symb] = "WAIT"
