@@ -33,5 +33,6 @@ class CoinDetails:
         __tick_size = self.get_tick_size()
         __price = self.get_price()
         __quantity = __budget / __price
+        __quantity = Decimal(str(__quantity))
         __rounded_quantity = float(__quantity - __quantity % Decimal(str(__tick_size)))
         return __rounded_quantity, __price
