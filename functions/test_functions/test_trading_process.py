@@ -25,12 +25,14 @@ class TestTrading():
         __account_stats = self.json_functions.read_file(self.json_functions.account_data_file)
         __coin_amount, __price = __coin_details.amount_calculation(__account_stats['budget'])
         __account_stats['budget'] = 0
+        clear_console()
+        print("Buying:", __symbol, "Price:", __price, "Amount:", __coin_amount)
 
         self.status = self.yml_functions.read_file(self.yml_functions.process_status_file)
         self.status['side'] = "BUY"
         self.status['current_coin'] = __symbol
         self.status['buy_price'] = __price
-        self.status['target_price'] = float(__price + (__price * 0.03), 4)
+        self.status['target_price'] = float(round(__price + (__price * 0.017), 4))
         self.status['coin_amount'] = __coin_amount
         self.status['process_time'] = datetime.now()
         self.status['in_position'] = True
@@ -44,7 +46,9 @@ class TestTrading():
         __coin_details = CoinDetails(self.status['current_coin'])
         __price = __coin_details.get_price()
         __account_stats = self.json_functions.read_file(self.json_functions.account_data_file)
-        print(self.status['current_coin'], "Looking for sell positions...")
+        clear_console()
+        print("Looking sell positions for:", self.status['current_coin'])
+        print("Current Price:", str(__price), "Target Price:", str(self.status['target_price']))
         if __price >= self.status['target_price']:
             __account_stats['budget'] = self.status['coin_amount'] * __coin_details.get_price()
 
@@ -59,11 +63,6 @@ class TestTrading():
             self.yml_functions.write_file(self.yml_functions.process_status_file, self.status)
             self.json_functions.write_file(self.json_functions.account_data_file, __account_stats)
 
-    def print_console(self):
-        clear_console()
-        self.status = self.yml_functions.read_file(self.yml_functions.process_status_file)
-        print(self.status)
-
         
     def signal(self):
         __signal, __symbol = self.strategy.strategy()
@@ -71,11 +70,8 @@ class TestTrading():
         
         if __signal == "BUY" and __symbol is not None and self.status['in_position'] == False:
             self.buy(__symbol)
-            
         elif self.status['current_coin'] != "" and self.status['in_position'] == True:
-            self.print_console()
-            print(self.status['current_coin'])
             self.sell()
-        
-        
-        print(__symbol)
+        else:
+            clear_console()
+            print(__symbol)

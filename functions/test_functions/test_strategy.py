@@ -11,7 +11,5 @@ class TestStrategy():
         __min_rsi_symbol, __min_rsi_value = self.rsi.min_rsi()
         if __min_rsi_value < 30:
             return "BUY", __min_rsi_symbol
-        elif __min_rsi_value > 60:
-            return "SELL", None
         else:
             return "WAIT", self.rsi.rsi_datas
