@@ -3,17 +3,14 @@
 ## _This is an experimental bot for auto trading for the binance._
 ## NOT COMPLETED!
 
-Before run change configs.py in settings document
+Before run check symbols.yml and client.yml in settings document
 
 ### Run to start bot:
 
 ```shell
-python start_bot.py
+python bot.py
 ```
 
-#
-
-![binance_bot_console](https://user-images.githubusercontent.com/98945441/202046317-aa2ffc51-46bf-4d06-8bd4-b6e895b99da9.png)
 
 ### Upcoming Futures:
 ```

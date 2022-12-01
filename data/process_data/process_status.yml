@@ -1,0 +1,8 @@
+in_position: false
+side: ""
+current_coin: ""
+buy_price: 0
+coin_amount: 0
+target_price: 0
+pnl: 0
+process_time: ""
