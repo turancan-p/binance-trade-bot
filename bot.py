@@ -39,7 +39,7 @@ def strategy_process():
                 strategy.signal()
                 finish_time = timeit.default_timer()
                 print(f'Signal check process completed in  {finish_time - start_time} seconds')
-                time.sleep(0.5)
+                time.sleep(0.2)
 
 
 

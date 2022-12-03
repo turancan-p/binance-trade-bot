@@ -26,7 +26,6 @@ class RsiCalculator:
         for key, values in self.rsi_datas.items():
             if values == min_value:
                 min_symbol = str(key)
-
-        print(f'Minimum RSI symbol:{min_symbol} value:{min_value}')
+                
         return min_symbol, min_value
             
