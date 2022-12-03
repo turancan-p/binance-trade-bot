@@ -7,6 +7,7 @@ from functions.test_functions.test_trading_process import TestTrading
 import timeit, time, os
 import multiprocessing
 
+os.system('color c')
 
 def clear():
     os.system('cls')
@@ -26,11 +27,9 @@ def new_data_process():
 
 
 def strategy_process():
-    rsi = RsiCalculator()
+    time.sleep(10)
     yml = ymlReadWrite()
     strategy = TestTrading()
-    symbols = yml.read_file(yml.symbols_file)['symbols']
-    time.sleep(10)
     while True:
         yml = ymlReadWrite()
         can_search = yml.read_file(yml.status_settings_file)
@@ -39,9 +38,8 @@ def strategy_process():
                 start_time = timeit.default_timer()
                 strategy.signal()
                 finish_time = timeit.default_timer()
-                can_search['can_search'] = False
-                yml.write_file(yml.status_settings_file, can_search)
                 print(f'Signal check process completed in  {finish_time - start_time} seconds')
+                time.sleep(0.5)
 
 
 

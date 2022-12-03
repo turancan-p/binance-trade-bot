@@ -1,5 +1,7 @@
 from functions.yaml_functions.read_write import ymlReadWrite
 from functions.json_functions.read_write import jsonReadWrite
+from functions.collect_functions import new_data_helper as sthelper
+
 from datetime import datetime
 
 import json
@@ -33,6 +35,7 @@ class NewData():
                 
                 self.response = json.loads(self.response)
                 __new_data = dict()
+                
                 if "e" in self.response:
                     __candle = self.response['k']
                     __date = datetime.fromtimestamp(int(str(__candle['T'])[:10])).strftime('%d/%m/%Y %H:%M')
@@ -52,11 +55,12 @@ class NewData():
                         print(__symbol)
                         print(__new_data)
                         self.json_functions.update_file(self.json_functions.all_coins_data_file,__new_data, __symbol)  
-
-                        if __yml_data['number'] != len(__symbols):
-                            __yml_data['number'] = __yml_data['number'] + 1
-                            __yml.write_file(__yml.status_settings_file, __yml_data)
-                        if __yml_data['number'] == (len(__symbols)):
-                            __yml_data['number'] = 1
-                            __yml_data['can_search'] = True
-                            __yml.write_file(__yml.status_settings_file, __yml_data)
+                        
+                        if sthelper.collected_number != len(__symbols):
+                            sthelper.collected_number += 1
+                            print(sthelper.collected_number)
+                            if sthelper.collected_number == (len(__symbols)):
+                                sthelper.collected_number = 0
+                                print(sthelper.collected_number)
+                                __yml_data['can_search'] = True
+                                __yml.write_file(__yml.status_settings_file, __yml_data)
