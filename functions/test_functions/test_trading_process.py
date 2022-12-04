@@ -22,4 +22,5 @@ class TestTrading():
             self.buy_sell_functions.buy(__symbol)
         elif self.status['in_position'] == True:
              self.buy_sell_functions.sell()
+             
         self.buy_sell_functions.write_console()
