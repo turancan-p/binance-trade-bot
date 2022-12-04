@@ -4,4 +4,4 @@ symbols: ["BTCUSDT",
    "ADAUSDT", "SOLUSDT",
     "TRXUSDT"] # Add, Delete or Change coin symbol here
 interval: "1m" # candle interval
-limit: 200 # maximum limit 1000 for historical data. You need it for indicators
+limit: 1000 # maximum limit 1000 for historical data. You need it for indicators

@@ -21,6 +21,7 @@ class TestBuySell():
         self.status = self.yml_functions.read_file(self.yml_functions.process_status_file)
         __coin_amount, __price = __coin_details.amount_calculation(__account_stats['budget'])
         __account_stats['budget'] = 0
+        self.price = __price
 
         self.status['side'] = "BUY"
         self.status['current_coin'] = __symbol
