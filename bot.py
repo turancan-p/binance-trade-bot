@@ -1,16 +1,11 @@
 from functions.collect_functions.collect_historical_functions import HistoricalData
 from functions.collect_functions.collect_new_functions import NewData
 from functions.yaml_functions.read_write import ymlReadWrite
-from functions.indicator_functions.rsi import RsiCalculator
-from functions.test_functions.test_trading_process import TestTrading
 
-import timeit, time, os
+from functions.test_functions.trading_process import Trade
+
+import timeit, time
 import multiprocessing
-
-os.system('color c')
-
-def clear():
-    os.system('cls')
 
 
 def historical_data_process():
@@ -29,15 +24,17 @@ def new_data_process():
 def strategy_process():
     time.sleep(10)
     yml = ymlReadWrite()
-    strategy = TestTrading()
+    strategy = Trade()
     while True:
         yml = ymlReadWrite()
         can_search = yml.read_file(yml.status_settings_file)
         if can_search is not None:
             if can_search['can_search'] == True:
                 start_time = timeit.default_timer()
-                strategy.signal()
+                strategy.trade_process()
                 finish_time = timeit.default_timer()
+                can_search['can_search'] = False
+                yml.write_file(yml.status_settings_file, can_search)
                 print(f'Signal check process completed in  {finish_time - start_time} seconds')
 
 

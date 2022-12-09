@@ -23,6 +23,6 @@ class ConvertNumpy:
                 target_value = float(index_data[target_column])
                 values.append(target_value)
             __numpy_datas = np.array(values)
-            self.converted[symbol] = __numpy_datas
+            self.converted[f'{symbol}_{target_column}'] = __numpy_datas
 
         

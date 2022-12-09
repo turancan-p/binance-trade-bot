@@ -1,8 +1,9 @@
-in_position: false
-side: ""
-current_coin: ""
-buy_price: 0
-coin_amount: 0
-target_price: 0
+buy_price: 1269.22
+coin_amount: 0.78
+current_coin: ETHUSDT
+in_position: true
 pnl: 0
-process_time: ""
+process_time: 09/12/2022 21:31
+side: Long
+stop_loss: 1262.8739
+target_price: 1278.7392
