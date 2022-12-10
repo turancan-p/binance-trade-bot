@@ -3,6 +3,7 @@ from functions.indicator_functions.adx import AdxCalculator
 from functions.yaml_functions.read_write import ymlReadWrite
 from functions.json_functions.read_write import jsonReadWrite
 
+import timeit
 
 
 class Strategy:
@@ -87,6 +88,9 @@ class Strategy:
                 self.third_signals[symbol] = "Wait"
 
     def find_signals(self):
+        start_time = timeit.default_timer()
         self.third_signal()
         self.result_signals = self.third_signals
+        finish_time = timeit.default_timer()
+        print(f'Signal find process completed in  {finish_time - start_time} seconds')
         return self.result_signals
