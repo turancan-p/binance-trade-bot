@@ -92,6 +92,50 @@ class Trade():
 
         return __list
 
+    def in_position_sell_process(self):
+        self.status = self.yml_functions.read_file(self.yml_functions.process_status_file)
+        
+        self.__temp_process_side = self.status['side']
+
+        self.process_table = PrettyTable()
+        self.process_table.field_names = ['Last Process', 'Current Coin',
+         'Buy Price', 'Target Price', 'Stop Price', 'Coin Amount', 
+         'PNL', 'Process Time', 'In Process']
+        self.account_table = PrettyTable()
+        self.account_table.field_names = ['Free Budget']
+
+        self.coin_details = CoinDetails(self.status['current_coin'])           
+        self.price = self.coin_details.get_price()
+        if self.price >= self.status['target_price'] or self.price <= self.status['stop_loss']:
+            __list = self.sell()
+            self.status['side'] = __list[0]
+            self.status['current_coin'] = __list[1]
+            self.status['buy_price'] = __list[2]
+            self.status['target_price'] = __list[3] 
+            self.status['stop_loss'] = __list[4]
+            self.status['coin_amount'] = __list[5] 
+            self.status['process_time'] = __list[6] 
+            self.status['in_position'] = __list[7]
+            self.account_data['budget'] = __list[8]
+
+            self.status['pnl'] = self.account_data['budget'] - self.account_data['starting_budget']
+                
+        
+        print(self.price)
+        if self.status['side'] != self.__temp_process_side:
+            self.yml_functions.write_file(self.yml_functions.process_status_file, self.status)
+            self.json_functions.write_file(self.json_functions.account_data_file, self.account_data)
+
+        self.process_table.add_row([self.status['side'], self.status['current_coin'],
+        self.status['buy_price'], self.status['target_price'], self.status['stop_loss'],
+        self.status['coin_amount'], self.status['pnl'], self.status['process_time'],
+        self.status['in_position']])
+
+        self.account_table.add_row([self.account_data['budget']])
+
+        print(self.account_table)
+        print(self.process_table)
+
     
     def trade_process(self):
         self.get_signals()
@@ -109,7 +153,7 @@ class Trade():
 
         self.status = self.yml_functions.read_file(self.yml_functions.process_status_file)
         self.account_data = self.json_functions.read_file(self.json_functions.account_data_file)
-        __temp_process_side = self.status['side']
+        self.__temp_process_side = self.status['side']
         
         if self.status['in_position'] == False:
             for symbol in self.symbols:
@@ -128,44 +172,43 @@ class Trade():
                 elif self.signals[symbol] == "Short" and self.status['in_position'] == False:
                     pass
         else:
-            self.coin_details = CoinDetails(self.status['current_coin'])
-            i = 10
-            while self.status['in_position']:
-                self.price = self.coin_details.get_price()
-                if self.price >= self.status['target_price'] or self.price <= self.status['stop_loss']:
-                    __list = self.sell()
-                    self.status['side'] = __list[0]
-                    self.status['current_coin'] = __list[1]
-                    self.status['buy_price'] = __list[2]
-                    self.status['target_price'] = __list[3] 
-                    self.status['stop_loss'] = __list[4]
-                    self.status['coin_amount'] = __list[5] 
-                    self.status['process_time'] = __list[6] 
-                    self.status['in_position'] = __list[7]
-                    self.account_data['budget'] = __list[8]
+            self.coin_details = CoinDetails(self.status['current_coin'])           
+            self.price = self.coin_details.get_price()
+            if self.price >= self.status['target_price'] or self.price <= self.status['stop_loss']:
+                __list = self.sell()
+                self.status['side'] = __list[0]
+                self.status['current_coin'] = __list[1]
+                self.status['buy_price'] = __list[2]
+                self.status['target_price'] = __list[3] 
+                self.status['stop_loss'] = __list[4]
+                self.status['coin_amount'] = __list[5] 
+                self.status['process_time'] = __list[6] 
+                self.status['in_position'] = __list[7]
+                self.account_data['budget'] = __list[8]
 
-                    self.status['pnl'] = self.account_data['budget'] - self.account_data['starting_budget']
+                self.status['pnl'] = self.account_data['budget'] - self.account_data['starting_budget']
                 
-                if i <= 0:
-                    print(self.price)
-                    if self.status['side'] != __temp_process_side:
-                        self.yml_functions.write_file(self.yml_functions.process_status_file, self.status)
-                        self.json_functions.write_file(self.json_functions.account_data_file, self.account_data)
+            if self.test <= 0:
+                print(self.price)
+                if self.status['side'] != self.__temp_process_side:
+                    self.yml_functions.write_file(self.yml_functions.process_status_file, self.status)
+                    self.json_functions.write_file(self.json_functions.account_data_file, self.account_data)
 
-                    self.process_table.add_row([self.status['side'], self.status['current_coin'],
-                    self.status['buy_price'], self.status['target_price'], self.status['stop_loss'],
-                    self.status['coin_amount'], self.status['pnl'], self.status['process_time'],
-                    self.status['in_position']])
+                self.process_table.add_row([self.status['side'], self.status['current_coin'],
+                self.status['buy_price'], self.status['target_price'], self.status['stop_loss'],
+                self.status['coin_amount'], self.status['pnl'], self.status['process_time'],
+                self.status['in_position']])
 
-                    self.account_table.add_row([self.account_data['budget']])
+                self.account_table.add_row([self.account_data['budget']])
 
-                    print(self.account_table)
-                    print(self.process_table)
-                    i = 10
-                i -= i - 1
+                print(self.account_table)
+                print(self.process_table)
+                self.test = 10
+                
+            self.test = self.test - 1
 
 
-        if self.status['side'] != __temp_process_side:
+        if self.status['side'] != self.__temp_process_side:
             self.yml_functions.write_file(self.yml_functions.process_status_file, self.status)
             self.json_functions.write_file(self.json_functions.account_data_file, self.account_data)
 

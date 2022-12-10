@@ -28,6 +28,7 @@ def strategy_process():
     while True:
         yml = ymlReadWrite()
         can_search = yml.read_file(yml.status_settings_file)
+        in_process = yml.read_file(yml.process_status_file)
         if can_search is not None:
             if can_search['can_search'] == True:
                 start_time = timeit.default_timer()
@@ -36,6 +37,9 @@ def strategy_process():
                 can_search['can_search'] = False
                 yml.write_file(yml.status_settings_file, can_search)
                 print(f'Signal check process completed in  {finish_time - start_time} seconds')
+         
+        if in_process['in_position'] == True:
+            strategy.in_position_sell_process()
 
 
 
