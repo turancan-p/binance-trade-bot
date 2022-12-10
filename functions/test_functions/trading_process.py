@@ -75,11 +75,11 @@ class Trade():
         self.status = self.yml_functions.read_file(self.yml_functions.process_status_file)
         
         if self.status['side'] == 'Short':
-            __budget = float(self.account_data['before_budget']+(-((self.price - self.status['__buy_price']) * self.status['coin_amount'])))
+            __budget = float(self.account_data['before_budget']+(-((self.price - self.status['buy_price']) * self.status['coin_amount'])))
         else:
-            __budget = float(self.account_data['before_budget']+((self.price - self.status['__buy_price']) * self.status['coin_amount']))
+            __budget = float(self.account_data['before_budget']+((self.price - self.status['buy_price']) * self.status['coin_amount']))
 
-        __side = "SELL"
+        __side = f'SELL - {self.status["current_coin"]}'
         __current_coin = ""
         __buy_price = ""
         __target_price = ""
@@ -111,7 +111,7 @@ class Trade():
             self.status['side'] = __list[0]
             self.status['current_coin'] = __list[1]
             self.status['buy_price'] = __list[2]
-            self.status['target_price'] = __list[3] 
+            self.status['target_price'] = __list[3]
             self.status['stop_loss'] = __list[4]
             self.status['coin_amount'] = __list[5] 
             self.status['process_time'] = __list[6] 
