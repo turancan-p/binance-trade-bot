@@ -18,13 +18,15 @@ class NewData():
     async def collect_new_data(self):
         __stream_url = "wss://stream.binance.com:9443/ws/"
         __symbols = self.yml_functions.read_file(self.yml_functions.symbols_file)['symbols']
+        __exchange_pair = str(self.yml_functions.read_file(self.yml_functions.symbols_file)['exchange_pair'])
         __interval = self.yml_functions.read_file(self.yml_functions.symbols_file)['interval']
-        __first_parameter = __symbols[0].lower() + "@kline_" + __interval
+        __first_parameter = __symbols[0].lower()+__exchange_pair.lower() + "@kline_" + __interval
         __other_parameters = list()
         for symbol in __symbols[1:]:
+            symbol = f'{symbol}{__exchange_pair}'
             __other_parameters.append(symbol.lower() + "@kline_" + __interval)
         __other_parameters = json.dumps(__other_parameters)
-
+    
         async with websockets.connect(__stream_url + __first_parameter) as socket:
             __header = '{"method": "SUBSCRIBE", "params": ' + __other_parameters + ',  "id": 1}'
 
@@ -58,9 +60,7 @@ class NewData():
                         
                         if sthelper.collected_number != len(__symbols):
                             sthelper.collected_number += 1
-                            print(sthelper.collected_number)
                             if sthelper.collected_number == (len(__symbols)):
                                 sthelper.collected_number = 0
-                                print(sthelper.collected_number)
                                 __yml_data['can_search'] = True
                                 __yml.write_file(__yml.status_settings_file, __yml_data)

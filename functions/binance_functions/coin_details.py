@@ -4,7 +4,9 @@ from binance.client import Client
 from decimal import Decimal
 
 import requests
+from requests.exceptions import Timeout
 
+import asyncio
 
 
 class CoinDetails:
@@ -17,21 +19,29 @@ class CoinDetails:
         self.client = Client(__api_key, __api_secret)
         
     def get_price(self):
-        __url = f'https://api.binance.com/api/v3/ticker/price?symbol={self.symbol}'
-        __response = requests.get(__url)
-        __response = __response.json()
-        __price = float(__response['price'])
-        return __price
+        try:
+            __url = f'https://api.binance.com/api/v3/ticker/price?symbol={self.symbol}'
+            __response = requests.get(__url, timeout=1)
+
+            __response = __response.json()
+            __price = float(__response['price'])
+            return __price
+        except Timeout as to:
+            print("Timeout error")
 
     def get_tick_size(self):
         __coin_info = self.client.get_symbol_info(self.symbol)
         __tick_size = __coin_info["filters"][0]["tickSize"]
         return __tick_size
     
-    def amount_calculation(self, budget):
+    def amount_calculation(self, budget, price = None):
         __budget = budget
         __tick_size = self.get_tick_size()
-        __price = self.get_price()
+        if price == None:
+            __price = self.get_price()
+        else:
+            __price = float(price)
+            
         __quantity = __budget / __price
         __quantity = Decimal(str(__quantity))
         __rounded_quantity = float(__quantity - __quantity % Decimal(str(__tick_size)))

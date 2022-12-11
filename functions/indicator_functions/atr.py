@@ -14,11 +14,14 @@ class AtrCalculator:
         data = ConvertNumpy()
         yml = ymlReadWrite()
         symbols = yml.read_file(yml.symbols_file)['symbols']
+        exchange_pair = yml.read_file(yml.symbols_file)['exchange_pair']
+
         __needed_columns = ['High_price', 'Low_price', 'Close_price']
         for __column in __needed_columns:
             data.convert_df_to_numpyarray(target_column=__column)
 
         for symbol in symbols:
+            symbol = f'{symbol}{exchange_pair}'
             self.atr_datas[symbol] = talib.ATR(data.converted[f'{symbol}_High_price'], 
             data.converted[f'{symbol}_Low_price'],
             data.converted[f'{symbol}_Close_price'], value)[-1]

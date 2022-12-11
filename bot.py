@@ -30,7 +30,7 @@ def strategy_process():
         can_search = yml.read_file(yml.status_settings_file)
         in_process = yml.read_file(yml.process_status_file)
         if can_search is not None:
-            if can_search['can_search'] == True:
+            if can_search['can_search'] == True and in_process['in_position'] == False:
                 start_time = timeit.default_timer()
                 strategy.trade_process()
                 finish_time = timeit.default_timer()

@@ -14,7 +14,9 @@ class EmaCalculator:
         data = ConvertNumpy()
         yml = ymlReadWrite()
         symbols = yml.read_file(yml.symbols_file)['symbols']
+        exchange_pair = yml.read_file(yml.symbols_file)['exchange_pair']
         column_name = 'Close_price'
         data.convert_df_to_numpyarray(target_column= column_name)
         for symbol in symbols:
+            symbol = f'{symbol}{exchange_pair}'
             self.ema_datas[symbol] = talib.EMA(data.converted[f'{symbol}_{column_name}'], value)[-1]

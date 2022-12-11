@@ -20,7 +20,10 @@ class KeltnerChannel:
         atr_50.calculate_atr_datas(10)
 
         symbols = yml.read_file(yml.symbols_file)['symbols']
+        exchange_pair = yml.read_file(yml.symbols_file)['exchange_pair']
+
         for symbol in symbols:
+            symbol = f'{symbol}{exchange_pair}'
             self.middle_line[symbol] = ema_50.ema_datas[symbol]
             self.up_line[symbol] = ema_50.ema_datas[symbol]  + (atr_50.atr_datas[symbol] * atr_multiplier)
             self.down_line[symbol] = ema_50.ema_datas[symbol]  - (atr_50.atr_datas[symbol] * atr_multiplier)

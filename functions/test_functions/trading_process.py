@@ -17,17 +17,20 @@ class Trade():
         self.account_data = self.json_functions.read_file(self.json_functions.account_data_file)
         self.start_budget = self.account_data['starting_budget']
         self.symbols = self.yml_functions.read_file(self.yml_functions.symbols_file)['symbols']
+        self.exchange_pair = self.yml_functions.read_file(self.yml_functions.symbols_file)['exchange_pair']
         
         self.strategy = Strategy()
         self.signals = None
 
         self.coin_details = None
         self.price = 0.0
+        self.can_get_current_coin = True
     
     def get_signals(self):
         self.signals = self.strategy.find_signals()
 
     def buy_long(self, symbol, side):
+        self.can_get_current_coin = True
         self.coin_details = CoinDetails(symbol)
         self.account_data = self.json_functions.read_file(self.json_functions.account_data_file)
         self.status = self.yml_functions.read_file(self.yml_functions.process_status_file)
@@ -50,6 +53,7 @@ class Trade():
         return __list
 
     def buy_short(self, symbol, side):
+        self.can_get_current_coin = True
         self.coin_details = CoinDetails(symbol)
         self.account_data = self.json_functions.read_file(self.json_functions.account_data_file)
         self.status = self.yml_functions.read_file(self.yml_functions.process_status_file)
@@ -94,6 +98,11 @@ class Trade():
 
     def in_position_sell_process(self):
         self.status = self.yml_functions.read_file(self.yml_functions.process_status_file)
+        print(self.can_get_current_coin)
+        if self.can_get_current_coin:
+            self.coin_details = CoinDetails(self.status['current_coin']) 
+            self.can_get_current_coin = False
+
         
         self.__temp_process_side = self.status['side']
 
@@ -104,21 +113,38 @@ class Trade():
         self.account_table = PrettyTable()
         self.account_table.field_names = ['Free Budget']
 
-        self.coin_details = CoinDetails(self.status['current_coin'])           
+                
         self.price = self.coin_details.get_price()
-        if self.price >= self.status['target_price'] or self.price <= self.status['stop_loss']:
-            __list = self.sell()
-            self.status['side'] = __list[0]
-            self.status['current_coin'] = __list[1]
-            self.status['buy_price'] = __list[2]
-            self.status['target_price'] = __list[3]
-            self.status['stop_loss'] = __list[4]
-            self.status['coin_amount'] = __list[5] 
-            self.status['process_time'] = __list[6] 
-            self.status['in_position'] = __list[7]
-            self.account_data['budget'] = __list[8]
+        
+        if self.status['side'] == "Long" and self.price is not None:
+            if self.price >= self.status['target_price'] or self.price <= self.status['stop_loss']:
+                __list = self.sell()
+                self.status['side'] = __list[0]
+                self.status['current_coin'] = __list[1]
+                self.status['buy_price'] = __list[2]
+                self.status['target_price'] = __list[3]
+                self.status['stop_loss'] = __list[4]
+                self.status['coin_amount'] = __list[5] 
+                self.status['process_time'] = __list[6] 
+                self.status['in_position'] = __list[7]
+                self.account_data['budget'] = __list[8]
 
-            self.status['pnl'] = self.account_data['budget'] - self.account_data['starting_budget']
+                self.status['pnl'] = self.account_data['budget'] - self.account_data['starting_budget']
+
+        elif self.status['side'] == "Short" and self.price is not None:
+            if self.price <= self.status['target_price'] or self.price >= self.status['stop_loss']:
+                __list = self.sell()
+                self.status['side'] = __list[0]
+                self.status['current_coin'] = __list[1]
+                self.status['buy_price'] = __list[2]
+                self.status['target_price'] = __list[3]
+                self.status['stop_loss'] = __list[4]
+                self.status['coin_amount'] = __list[5] 
+                self.status['process_time'] = __list[6] 
+                self.status['in_position'] = __list[7]
+                self.account_data['budget'] = __list[8]
+
+                self.status['pnl'] = self.account_data['budget'] - self.account_data['starting_budget']
                 
         
         print(self.price)
@@ -157,6 +183,7 @@ class Trade():
         
         if self.status['in_position'] == False:
             for symbol in self.symbols:
+                symbol = f'{symbol}{self.exchange_pair}'
                 if self.signals[symbol] == "Long":
                     __list = self.buy_long(symbol, "Long")
                     self.status['side'] = __list[0]

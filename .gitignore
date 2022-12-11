@@ -156,3 +156,7 @@ backtest/BNB@kline_1m_npcloses.csv
 backtest/strategy_test.py
 backtest/strategy_test.py
 backtest/test.py
+settings/client.yml
+data/process_data/process_status.yml
+data/coin_data/all_data.json
+data/account_data/account_stats.json

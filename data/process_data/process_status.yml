@@ -2,8 +2,8 @@ buy_price:
 coin_amount: 
 current_coin: 
 in_position: false
-pnl:
+pnl: null
 process_time: 
 side: 
 stop_loss: 
-target_price: 
+target_price:

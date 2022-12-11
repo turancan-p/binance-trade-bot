@@ -15,9 +15,11 @@ class ConvertNumpy:
         __convert.read_data()
         __convert.convert_js_data_to_df()
         __symbols = __yml.read_file(__yml.symbols_file)['symbols']
+        __exchange_pair = __yml.read_file(__yml.symbols_file)['exchange_pair']
 
         for symbol in __symbols:
             values = []
+            symbol = f'{symbol}{__exchange_pair}'
             for i in range(0, len(__convert.all_converted_df_data[symbol].index)):
                 index_data = __convert.all_converted_df_data[symbol][i:i + 1]
                 target_value = float(index_data[target_column])

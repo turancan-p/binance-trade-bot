@@ -13,10 +13,12 @@ class RsiCalculator:
         data = ConvertNumpy()
         yml = ymlReadWrite()
         symbols = yml.read_file(yml.symbols_file)['symbols']
+        exchange_pair = yml.read_file(yml.symbols_file)['exchange_pair']
         __column_name = 'Close_price'
 
         data.convert_df_to_numpyarray(target_column=__column_name)
         for symbol in symbols:
+            symbol = f'{symbol}{exchange_pair}'
             self.rsi_datas[symbol] = talib.RSI(data.converted[f'{symbol}_{__column_name}'], value)[-1]
 
     

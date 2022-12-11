@@ -1,7 +1,12 @@
-symbols: ["BTCUSDT",
- "BNBUSDT", "ETHUSDT",
-  "LTCUSDT", "XRPUSDT",
-   "ADAUSDT", "SOLUSDT",
-    "TRXUSDT"] # Add, Delete or Change coin symbol here
+symbols: ["BTC",
+ "BNB", "ETH",
+  "LTC", "XRP",
+   "ADA", "SOL",
+    "TRX","DOGE",
+    "OSMO", "ATOM",
+    "APE", "AVAX",
+    "MITH","AUTO",
+    "DOT"] # Add, Delete or Change coin symbol here
+exchange_pair: "USDT"
 interval: "1m" # candle interval
 limit: 1000 # maximum limit 1000 for historical data. You need it for indicators

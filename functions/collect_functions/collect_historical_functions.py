@@ -14,6 +14,7 @@ class HistoricalData():
         __api_key = self.yml_functions.read_file(self.yml_functions.client_file)['api_key']
         __api_secret = self.yml_functions.read_file(self.yml_functions.client_file)['api_secret']
         __symbols = self.yml_functions.read_file(self.yml_functions.symbols_file)['symbols']
+        __exchange_pair = self.yml_functions.read_file(self.yml_functions.symbols_file)['exchange_pair']
         __interval = self.yml_functions.read_file(self.yml_functions.symbols_file)['interval']
         __limit = self.yml_functions.read_file(self.yml_functions.symbols_file)['limit']
         __new_client = Client(__api_key, __api_secret)
@@ -21,6 +22,7 @@ class HistoricalData():
 
 
         for symbol in __symbols:
+            symbol = f'{symbol}{__exchange_pair}'
             __datas = __new_client.get_historical_klines(symbol=symbol, interval=__interval, limit=__limit+1)
             __datalist = list()
             for value in __datas:
