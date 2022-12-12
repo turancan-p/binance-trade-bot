@@ -2,7 +2,7 @@ from functions.yaml_functions.read_write import ymlReadWrite
 from functions.json_functions.read_write import jsonReadWrite
 from functions.collect_functions import new_data_helper as sthelper
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import json
 import websockets
@@ -40,7 +40,9 @@ class NewData():
                 
                 if "e" in self.response:
                     __candle = self.response['k']
-                    __date = datetime.fromtimestamp(int(str(__candle['T'])[:10])).strftime('%d/%m/%Y %H:%M')
+                    __date = datetime.fromtimestamp(int(str(__candle['T'])[:10]))
+                    __date = __date - timedelta(minutes=4)
+                    __date = __date.strftime('%d/%m/%Y %H:%M')
                     __symbol = __candle['s']
                     __open_price = float(__candle['o'])
                     __high_price = float(__candle['h'])

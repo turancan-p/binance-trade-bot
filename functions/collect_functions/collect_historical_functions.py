@@ -2,7 +2,7 @@ from functions.yaml_functions.read_write import ymlReadWrite
 from functions.json_functions.read_write import jsonReadWrite
 
 from binance.client import Client
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class HistoricalData():
@@ -26,7 +26,9 @@ class HistoricalData():
             __datas = __new_client.get_historical_klines(symbol=symbol, interval=__interval, limit=__limit+1)
             __datalist = list()
             for value in __datas:
-                __date = datetime.fromtimestamp(int(str(value[6])[:10])).strftime('%d/%m/%Y %H:%M')
+                __date = datetime.fromtimestamp(int(str(value[6])[:10]))
+                __date = __date - timedelta(minutes=4)
+                __date = __date.strftime('%d/%m/%Y %H:%M')
                 __open_price = float(value[1])
                 __high_price = float(value[2])
                 __low_price = float(value[3])

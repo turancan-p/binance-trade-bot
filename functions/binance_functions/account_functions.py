@@ -12,5 +12,4 @@ class AccountDetails:
 
     def get_free_balance(self, symbol):
         __balance = self.current_client.get_asset_balance(symbol)
-        float(__balance['free'])
         return float(__balance['free'])

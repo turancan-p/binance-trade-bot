@@ -98,7 +98,6 @@ class Trade():
 
     def in_position_sell_process(self):
         self.status = self.yml_functions.read_file(self.yml_functions.process_status_file)
-        print(self.can_get_current_coin)
         if self.can_get_current_coin:
             self.coin_details = CoinDetails(self.status['current_coin']) 
             self.can_get_current_coin = False
@@ -129,7 +128,7 @@ class Trade():
                 self.status['in_position'] = __list[7]
                 self.account_data['budget'] = __list[8]
 
-                self.status['pnl'] = self.account_data['budget'] - self.account_data['starting_budget']
+                self.status['pnl'] = self.account_data['budget'] - self.start_budget
 
         elif self.status['side'] == "Short" and self.price is not None:
             if self.price <= self.status['target_price'] or self.price >= self.status['stop_loss']:
@@ -144,7 +143,7 @@ class Trade():
                 self.status['in_position'] = __list[7]
                 self.account_data['budget'] = __list[8]
 
-                self.status['pnl'] = self.account_data['budget'] - self.account_data['starting_budget']
+                self.status['pnl'] = self.account_data['budget'] - self.start_budget
                 
         
         print(self.price)

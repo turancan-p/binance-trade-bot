@@ -35,10 +35,13 @@ class CoinDetails:
         return __tick_size
     
     def amount_calculation(self, budget, price = None):
+        
         __budget = budget
         __tick_size = self.get_tick_size()
         if price == None:
             __price = self.get_price()
+            while __price == None:
+                __price = self.get_price()
         else:
             __price = float(price)
             

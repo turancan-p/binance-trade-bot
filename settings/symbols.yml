@@ -8,5 +8,5 @@ symbols: ["BTC",
     "MITH","AUTO",
     "DOT"] # Add, Delete or Change coin symbol here
 exchange_pair: "USDT"
-interval: "1m" # candle interval
+interval: "5m" # candle interval
 limit: 1000 # maximum limit 1000 for historical data. You need it for indicators

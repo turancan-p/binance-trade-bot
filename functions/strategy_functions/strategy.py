@@ -82,9 +82,9 @@ class Strategy:
             if self.second_signals[symbol] == "Short" or self.second_signals[symbol] == "Long":
                 self.adx.calculate_adx_datas(12, symbol)
                 print(symbol, self.adx.atr_data)
-                if self.adx.atr_data > 40 and self.adx.atr_data < 50 and self.second_signals[symbol] == "Short":
+                if self.adx.atr_data > 40 and self.second_signals[symbol] == "Short":
                     self.third_signals[symbol] = "Short"
-                elif self.adx.atr_data > 40 and self.adx.atr_data < 50 and self.second_signals[symbol] == "Long":
+                elif self.adx.atr_data > 40 and self.second_signals[symbol] == "Long":
                     self.third_signals[symbol] = "Long"
                 else:
                     self.third_signals[symbol] = "Wait"
