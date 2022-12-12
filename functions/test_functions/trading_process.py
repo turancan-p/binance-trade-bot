@@ -92,7 +92,11 @@ class Trade():
         __process_time = datetime.now().strftime('%d/%m/%Y %H:%M')
         __process_status = False
 
-        __list = [__side, __current_coin, __buy_price, __target_price, __stop_loss, __coin_amount, __process_time, __process_status, __budget]
+        __list = [__side, __current_coin,
+         __buy_price, __target_price,
+          __stop_loss, __coin_amount,
+           __process_time, __process_status,
+            __budget]
 
         return __list
 
@@ -112,6 +116,7 @@ class Trade():
         self.account_table = PrettyTable()
         self.account_table.field_names = ['Free Budget']
 
+        self.__temp_process_side = self.status['side']
                 
         self.price = self.coin_details.get_price()
         
@@ -147,6 +152,7 @@ class Trade():
                 
         
         print(self.price)
+        print(self.status['side'], self.__temp_process_side)
         if self.status['side'] != self.__temp_process_side:
             self.yml_functions.write_file(self.yml_functions.process_status_file, self.status)
             self.json_functions.write_file(self.json_functions.account_data_file, self.account_data)
@@ -165,7 +171,7 @@ class Trade():
     def trade_process(self):
         self.get_signals()
 
-        #os.system('cls')
+        
 
         print("Signal Checking")
         print(self.signals)
@@ -181,6 +187,7 @@ class Trade():
         self.__temp_process_side = self.status['side']
         
         if self.status['in_position'] == False:
+            #os.system('cls')
             for symbol in self.symbols:
                 symbol = f'{symbol}{self.exchange_pair}'
                 if self.signals[symbol] == "Long":
