@@ -7,6 +7,7 @@ from functions.strategy_functions.dataframe_to_numpy import ConvertNumpy
 class EmaCalculator:
     def __init__(self):
         self.ema_datas = dict()
+        self.ema = dict()
 
 
     
@@ -20,3 +21,13 @@ class EmaCalculator:
         for symbol in symbols:
             symbol = f'{symbol}{exchange_pair}'
             self.ema_datas[symbol] = talib.EMA(data.converted[f'{symbol}_{column_name}'], value)[-1]
+
+
+    def calculate_ema_datas_(self, ema_value: int, all_numpy_data):
+        yml = ymlReadWrite()
+        symbols = yml.read_file(yml.symbols_file)['symbols']
+        exchange_pair = yml.read_file(yml.symbols_file)['exchange_pair']
+        for symbol in symbols:
+            symbol = f'{symbol}{exchange_pair}'
+            self.ema[symbol] = talib.EMA(all_numpy_data[f'{symbol}_Close_price'], ema_value)[-1]
+    

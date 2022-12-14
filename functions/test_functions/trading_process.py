@@ -171,10 +171,7 @@ class Trade():
     def trade_process(self):
         self.get_signals()
 
-        
-
         print("Signal Checking")
-        print(self.signals)
         self.process_table = PrettyTable()
         self.process_table.field_names = ['Last Process', 'Current Coin',
          'Buy Price', 'Target Price', 'Stop Price', 'Coin Amount', 
@@ -190,7 +187,7 @@ class Trade():
             #os.system('cls')
             for symbol in self.symbols:
                 symbol = f'{symbol}{self.exchange_pair}'
-                if self.signals[symbol] == "Long":
+                if self.signals[symbol]['Signal'] == "Last Long Signal":
                     __list = self.buy_long(symbol, "Long")
                     self.status['side'] = __list[0]
                     self.status['current_coin'] = __list[1]
@@ -202,7 +199,7 @@ class Trade():
                     self.status['in_position'] = __list[7]
                     self.account_data['budget'] = __list[8]
                 
-                elif self.signals[symbol] == "Short" and self.status['in_position'] == False:
+                elif self.signals[symbol]['Signal'] == "Last Short Signal":
                     __list = self.buy_short(symbol, "Short")
                     self.status['side'] = __list[0]
                     self.status['current_coin'] = __list[1]
@@ -214,7 +211,6 @@ class Trade():
                     self.status['in_position'] = __list[7]
                     self.account_data['budget'] = __list[8]
                 
-
 
         if self.status['side'] != self.__temp_process_side:
             self.yml_functions.write_file(self.yml_functions.process_status_file, self.status)

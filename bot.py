@@ -22,7 +22,7 @@ def new_data_process():
 
 
 def strategy_process():
-    time.sleep(10)
+    time.sleep(25)
     yml = ymlReadWrite()
     strategy = Trade()
     while True:

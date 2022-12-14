@@ -6,7 +6,13 @@ symbols: ["BTC",
     "OSMO", "ATOM",
     "APE", "AVAX",
     "MITH","AUTO",
-    "DOT"] # Add, Delete or Change coin symbol here
+    "DOT", "TVK",
+    "FIDA", "DYDX",
+    "BEAM", "RLC",
+    "TLM", "STX",
+    "MATIC", "UNI",
+    "LINK", "XMR",
+    "ALGO"] # Add, Delete or Change coin symbol here
 exchange_pair: "USDT"
 interval: "5m" # candle interval
 limit: 1000 # maximum limit 1000 for historical data. You need it for indicators

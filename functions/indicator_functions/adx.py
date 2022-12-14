@@ -7,6 +7,7 @@ from functions.strategy_functions.dataframe_to_numpy import ConvertNumpy
 class AdxCalculator:
     def __init__(self):
         self.atr_data = None
+        self.adx_data = dict()
 
 
     
@@ -20,3 +21,7 @@ class AdxCalculator:
         data.converted[f'{symbol}_Low_price'],
         data.converted[f'{symbol}_Close_price'], value)[-1]
         
+    def calculate_adx_datas_(self, value: int, symbol: str, all_numpy_data):
+        self.adx_data[symbol] = talib.ADX(all_numpy_data[f'{symbol}_High_price'], 
+        all_numpy_data[f'{symbol}_Low_price'],
+        all_numpy_data[f'{symbol}_Close_price'], value)[-1]
