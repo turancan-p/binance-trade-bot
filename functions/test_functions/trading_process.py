@@ -187,7 +187,7 @@ class Trade():
             #os.system('cls')
             for symbol in self.symbols:
                 symbol = f'{symbol}{self.exchange_pair}'
-                if self.signals[symbol]['Signal'] == "Last Long Signal":
+                if self.signals[symbol] == "Long":
                     __list = self.buy_long(symbol, "Long")
                     self.status['side'] = __list[0]
                     self.status['current_coin'] = __list[1]
@@ -199,7 +199,7 @@ class Trade():
                     self.status['in_position'] = __list[7]
                     self.account_data['budget'] = __list[8]
                 
-                elif self.signals[symbol]['Signal'] == "Last Short Signal":
+                elif self.signals[symbol] == "Short":
                     __list = self.buy_short(symbol, "Short")
                     self.status['side'] = __list[0]
                     self.status['current_coin'] = __list[1]
