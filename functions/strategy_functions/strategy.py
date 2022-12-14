@@ -94,7 +94,7 @@ class Strategy:
                 self.result_signals[symbol] = {"Signal": "First Short Signal", "Wait Period": self.second_signal_wait[symbol]}
                 self.second_signal_wait[symbol] = 3
                 self.second_bool[symbol] = True
-            elif self.all_json_data[symbol][-1][3] < self.kelter_blue.down_line[symbol]: 
+            if self.all_json_data[symbol][-1][3] < self.kelter_blue.down_line[symbol]: 
                 self.result_signals[symbol] = {"Signal": "First Long Signal", "Wait Period": self.second_signal_wait[symbol]}
                 self.second_signal_wait[symbol] = 3
                 self.second_bool[symbol] = True
@@ -105,7 +105,7 @@ class Strategy:
                         self.result_signals[symbol] = {"Signal": "Second Short Signal", "Wait Period": self.second_signal_wait[symbol]}
                         self.third_signal_wait[symbol] = 15
                         self.third_bool[symbol] = True
-                elif self.second_signal_wait[symbol] > 0 and self.all_json_data[symbol][-1][4] > self.kelter_red.down_line[symbol]:
+                if self.second_signal_wait[symbol] > 0 and self.all_json_data[symbol][-1][4] > self.kelter_red.down_line[symbol]:
                         self.result_signals[symbol] = {"Signal": "Second Long Signal", "Wait Period": self.second_signal_wait[symbol]}
                         self.third_signal_wait[symbol] = 15
                         self.third_bool[symbol] = True
@@ -119,13 +119,16 @@ class Strategy:
             if self.third_bool[symbol] == True:
                 self.adx.calculate_adx_datas_(12, symbol, self.data.converted)
                 # short stop < last close and adx > 40 = short direction
-                if self.result_signals[symbol]['signal'] == "Second Short Signal" and self.third_signal_wait[symbol] > 0 and self.my_indicator.signals[symbol][1] < self.all_json_data[symbol][-1][4] and self.adx.adx_data[symbol] > 40:
+                if self.result_signals[symbol]['Signal'] == "Second Short Signal" and self.third_signal_wait[symbol] > 0 and self.my_indicator.signals[symbol][1] < self.all_json_data[symbol][-1][4] and self.adx.adx_data[symbol] > 40:
                     self.result_signals[symbol] = {"Signal": "Last Short Signal", "Wait Period": self.third_signal_wait[symbol]}
-
+                    self.second_signal_wait[symbol] = 0
+                    self.third_signal_wait[symbol] = 0
                 # long stop > last close and adx > 40 = long direction
-                elif self.result_signals[symbol]['signal'] == "Second Long Signal" and self.third_signal_wait[symbol] > 0 and self.my_indicator.signals[symbol][0] > self.all_json_data[symbol][-1][4] and self.adx.adx_data[symbol] > 40:
+                if self.result_signals[symbol]['Signal'] == "Second Long Signal" and self.third_signal_wait[symbol] > 0 and self.my_indicator.signals[symbol][0] > self.all_json_data[symbol][-1][4] and self.adx.adx_data[symbol] > 40:
                     self.result_signals[symbol] = {"Signal": "Last Long Signal", "Wait Period": self.third_signal_wait[symbol]}
-                
+                    self.second_signal_wait[symbol] = 0
+                    self.third_signal_wait[symbol] = 0
+ 
                 if self.third_signal_wait[symbol] > 0:
                     self.third_signal_wait[symbol] = self.third_signal_wait[symbol] - 1
                 else:
