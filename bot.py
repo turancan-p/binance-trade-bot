@@ -36,7 +36,8 @@ def strategy_process():
                 finish_time = timeit.default_timer()
                 can_search['can_search'] = False
                 yml.write_file(yml.status_settings_file, can_search)
-                print(f'Signal check process completed in  {finish_time - start_time} seconds')
+                print("")
+                print(f'trade check process completed in  {finish_time - start_time} seconds')
          
         if in_process['in_position'] == True:
             strategy.in_position_sell_process()
