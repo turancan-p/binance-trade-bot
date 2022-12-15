@@ -109,19 +109,21 @@ class Strategy:
             if __last_high_value > __kelter_channel_blue_up_line: # for long
                 self.first_signal_wait[symbol] = 3
                 self.first_bool[symbol] = True, "Long"
-            elif __last_low_value < __kelter_channel_blue_down_line: # for short
+
+            if __last_low_value < __kelter_channel_blue_down_line: # for short
                 self.first_signal_wait[symbol] = 3
                 self.first_bool[symbol] = True, "Short"
 
             # second check kelter channel 2.75
             if self.first_bool[symbol][0] == True and self.first_signal_wait[symbol] > 0:
                 if self.first_bool[symbol][1] == "Long":
-                    if __last_close_value < __kelter_channel_red_up_line: # for long
+                    if __last_close_value > __kelter_channel_red_down_line: # for long
                         self.first_signal_wait[symbol] = 0
                         self.second_bool[symbol] = True, "Long"
                         self.second_signal_wait[symbol] = 15
+
                 elif self.first_bool[symbol][1] == "Short":
-                    if __last_close_value > __kelter_channel_red_down_line: # for short
+                    if __last_close_value < __kelter_channel_red_up_line: # for short
                         self.first_signal_wait[symbol] = 0
                         self.second_bool[symbol] = True, "Short"
                         self.second_signal_wait[symbol] = 15
