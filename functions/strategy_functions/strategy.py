@@ -79,7 +79,7 @@ class Strategy:
         print("signal find process starting")
         start_time = timeit.default_timer()
 
-        self.ema_datas.calculate_ema_datas_(20, self.data.converted)
+        self.ema_datas.calculate_ema_datas_(50, self.data.converted)
 
         self.atr_datas.calculate_atr_datas_(10, self.data.converted)
         self.kelter_blue.calculate_channel_(4, self.ema_datas.ema, self.atr_datas.atr_data)
@@ -109,28 +109,30 @@ class Strategy:
             if __last_high_value > __kelter_channel_blue_up_line: # for long
                 self.first_signal_wait[symbol] = 3
                 self.first_bool[symbol] = True, "Long"
+                self.second_bool[symbol] = False, ""
+                self.second_signal_wait[symbol] = 0
 
             if __last_low_value < __kelter_channel_blue_down_line: # for short
                 self.first_signal_wait[symbol] = 3
                 self.first_bool[symbol] = True, "Short"
+                self.second_bool[symbol] = False, ""
+                self.second_signal_wait[symbol] = 0
 
             # second check kelter channel 2.75
             if self.first_bool[symbol][0] == True and self.first_signal_wait[symbol] > 0:
-                if self.first_bool[symbol][1] == "Long":
-                    if __last_close_value < __kelter_channel_red_up_line: # for long
-                        self.first_signal_wait[symbol] = 0
-                        self.second_bool[symbol] = True, "Long"
-                        self.second_signal_wait[symbol] = 15
+                if self.first_bool[symbol][1] == "Long" and __last_close_value < __kelter_channel_red_up_line:
+                    self.first_signal_wait[symbol] = 0
+                    self.second_bool[symbol] = True, "Long"
+                    self.second_signal_wait[symbol] = 15
 
-                elif self.first_bool[symbol][1] == "Short":
-                    if __last_close_value > __kelter_channel_red_down_line: # for short
-                        self.first_signal_wait[symbol] = 0
-                        self.second_bool[symbol] = True, "Short"
-                        self.second_signal_wait[symbol] = 15
+                elif self.first_bool[symbol][1] == "Short" and __last_close_value > __kelter_channel_red_down_line:
+                    self.first_signal_wait[symbol] = 0
+                    self.second_bool[symbol] = True, "Short"
+                    self.second_signal_wait[symbol] = 15
                 else:
                     self.first_signal_wait[symbol] = self.first_signal_wait[symbol] - 1
 
-                if self.first_signal_wait[symbol] == 0:
+                if self.first_signal_wait[symbol] <= 0:
                     self.first_bool[symbol] = False, ""
 
             # third check adx and my own trend indicator
@@ -148,6 +150,7 @@ class Strategy:
 
                 if self.second_signal_wait[symbol] == 0:
                     self.second_bool[symbol] = False, ""
+                    
             else:
                 if self.first_bool[symbol][0] == True:
                     self.result_signals[symbol] = f'Waiting second signal {self.first_signal_wait[symbol]}'
@@ -155,11 +158,13 @@ class Strategy:
                     self.result_signals[symbol] = f'Waiting first signal'
             
             __trend = None, __long_stop_value, __short_stop_value
-            if __last_close_value >= __short_stop_value:
+            if __last_close_value >= __short_stop_value and __second_last_close_value < __short_stop_value:
                 __trend = "UpTrend", __long_stop_value
 
-            if __last_close_value <= __long_stop_value:
+            elif __last_close_value <= __long_stop_value and __second_last_close_value > __long_stop_value:
                 __trend = "ShortTrend", __short_stop_value
+            else:
+                __trend = "ShortTrend", __long_stop_value, __short_stop_value
 
 
             __current_data_dict = {'Symbol': symbol,
