@@ -69,5 +69,4 @@ class MyIndicator:
                 short_stop = lowest + (atr_multiplier * atr[symbol])
                 long_stop = highest - (atr_multiplier * atr[symbol])
 
-
                 self.signals[symbol] = long_stop, short_stop
