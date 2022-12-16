@@ -87,7 +87,6 @@ class Strategy:
 
         self.atr_datas.calculate_atr_datas_(22, self.data.converted)
         self.my_indicator.calculate_signals_(30, self.atr_datas.atr_data, 3, self.data.converted)
-        
         for symbol in self.symbols:
             symbol = f'{symbol}{self.__exchange_pair}'
             self.adx.calculate_adx_datas_(12, symbol, self.data.converted)
@@ -106,15 +105,15 @@ class Strategy:
             __kelter_channel_red_down_line = self.kelter_red.down_line[symbol]
 
             # first check kelter channel 4
-            if __last_high_value > __kelter_channel_blue_up_line: # for long
+            if __last_high_value > __kelter_channel_blue_up_line: # for short
                 self.first_signal_wait[symbol] = 3
-                self.first_bool[symbol] = True, "Long"
+                self.first_bool[symbol] = True, "Short"
                 self.second_bool[symbol] = False, ""
                 self.second_signal_wait[symbol] = 0
 
-            if __last_low_value < __kelter_channel_blue_down_line: # for short
+            if __last_low_value < __kelter_channel_blue_down_line: # for long
                 self.first_signal_wait[symbol] = 3
-                self.first_bool[symbol] = True, "Short"
+                self.first_bool[symbol] = True, "Long"
                 self.second_bool[symbol] = False, ""
                 self.second_signal_wait[symbol] = 0
 
@@ -134,6 +133,7 @@ class Strategy:
 
                 if self.first_signal_wait[symbol] <= 0:
                     self.first_bool[symbol] = False, ""
+                    self.first_signal_wait[symbol] = 0
 
             # third check adx and my own trend indicator
             if self.second_bool[symbol][0] == True and self.second_signal_wait[symbol] > 0:
@@ -168,7 +168,6 @@ class Strategy:
 
 
             __current_data_dict = {'Symbol': symbol,
-             'Status': self.result_signals[symbol],
               'Last High Price': __last_high_value,
                'Last Low Price': __last_low_value,
                 'Last Close Price': __last_close_value,
@@ -188,10 +187,23 @@ class Strategy:
                 'Adx': __adx_value,
                 'Directions': __trend
                 }
-
-            print("")
+            __signals_dict = {'symbol': symbol,
+            'First': self.first_bool[symbol],
+            'Second': self.second_bool[symbol],
+            'Last': self.result_signals[symbol]
+            }
+            print("---------------------------------------------------------------------------------------------------------------------")
+            print("Symbol values")
             print(__current_data_dict)
+            print("")
+            print("Symbol indicator values")
             print(__current_indicator_data_dict)
+            print("")
+            print("Signal Status")
+            print(__signals_dict)
+            print("---------------------------------------------------------------------------------------------------------------------")
+            print("")
+
         finish_time = timeit.default_timer()
         print(f'Signal find process completed in  {finish_time - start_time} seconds')
 
