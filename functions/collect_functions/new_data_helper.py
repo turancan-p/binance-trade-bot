@@ -1,1 +1,0 @@
-collected_number = 0

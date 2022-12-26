@@ -1,5 +1,5 @@
 # Binance Trading & Backtesing Bot
-# Do not use in real transactions
+# Dont recommended using in real transactions
 ## This bot working with one or multiple coins
 ## _This is an experimental bot for auto trading for the binance._
 ## NOT COMPLETED!

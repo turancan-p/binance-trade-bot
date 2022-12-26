@@ -1,0 +1,35 @@
+{
+  "Proces_1": {
+    "last_process": null,
+    "process_time": null,
+    "current_coin": null,
+    "coin_amount": null,
+    "process_start_price": null,
+    "take_profit_price": null,
+    "stop_loss_price": null,
+    "in_position": false,
+    "used_money": null
+  },
+  "Proces_2": {
+    "last_process": null,
+    "process_time": null,
+    "current_coin": null,
+    "coin_amount": null,
+    "process_start_price": null,
+    "take_profit_price": null,
+    "stop_loss_price": null,
+    "in_position": false,
+    "used_money": null
+  },
+  "Proces_3": {
+    "last_process": null,
+    "process_time": null,
+    "current_coin": null,
+    "coin_amount": null,
+    "process_start_price": null,
+    "take_profit_price": null,
+    "stop_loss_price": null,
+    "in_position": false,
+    "used_money": null
+  }
+}
