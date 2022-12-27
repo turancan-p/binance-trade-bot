@@ -35,6 +35,10 @@ class Trade():
             with open("./test_process/process_status.json", "r") as process_file:
                 __process_status = json.load(process_file)
             
+            for process in self.process_list:
+                if __process_status[process]["in_position"] == True:               
+                    self.sell(process)
+            
             if __controller != None:
                 if __controller["can_check_signals"] == True:
                     self.strategy.find_signal()
@@ -46,10 +50,6 @@ class Trade():
                     for process in self.process_list:
                         if __process_status[process]["in_position"] == False:
                             self.buy(process)
-                            
-            for process in self.process_list:
-                if __process_status[process]["in_position"] == True:               
-                    self.sell(process)
             
             for __symbol in self.symbols:
                 __symbol = __symbol + self.exchange
@@ -86,8 +86,6 @@ class Trade():
                     __last_process = "Short"
                     __take_profit_price = float(round(__process_start_price - (__process_start_price * 0.0075), 4))
                     __stop_loss_price = float(round(__process_start_price + (__process_start_price * 0.005), 4))
-                
-                
 
                 __process_status[process]["last_process"] = __last_process
                 __process_status[process]["process_time"] = __process_time
@@ -105,8 +103,9 @@ class Trade():
 
                 with open("./test_process/account_stats.yml", "w") as account_stats_file:
                     yaml.safe_dump(__account_stats, account_stats_file)
+                self.strategy.third_check[__symbol][0] = ""
                 print(__symbol, "breaking")
-                break
+            break
 
     def sell(self, process):
         __can_trade = False
@@ -124,7 +123,7 @@ class Trade():
         __process_start_price = __process_status[process]["process_start_price"]
         __coin_amount = __process_status[process]["coin_amount"]
 
-
+        print("Status:", process, __current_coin, __take_profit_price, __current_price, __stop_loss_price)
         if __last_process == "Long":
             if __current_price <= __stop_loss_price or __current_price >= __take_profit_price:
                 __can_trade = True
@@ -138,7 +137,7 @@ class Trade():
             with open("./test_process/account_stats.yml", "r") as account_file:
                 __account_stats = yaml.load(account_file, Loader=yaml.FullLoader)
 
-            __account_stats['money'] = __process_status[process]['used_money'] + __pnl
+            __account_stats['money'] = __account_stats['money'] + __process_status[process]['used_money'] + __pnl
             __account_stats['pnl'] = __account_stats['pnl'] + __pnl
             
             __last_process = f'SELL - {self.process_status[process]["current_coin"]}'
