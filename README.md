@@ -4,6 +4,12 @@
 ## _This is an experimental auto trading bot for the binance._
 ## NOT COMPLETED!
 
+
+# Website
+### [turan-can.com](https://turan-can.com)
+
+
+
 Before run check symbols.yml and client.yml in settings document
 
 ### Run to start bot:
